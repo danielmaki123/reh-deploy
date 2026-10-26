@@ -1,0 +1,4 @@
+schema-*.json
+analyze-schema*.py
+mcp.mjs
+*.log

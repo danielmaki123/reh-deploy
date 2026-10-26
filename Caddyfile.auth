@@ -1,0 +1,21 @@
+# Variante con basic auth propio de Caddy (segunda capa).
+# Se usa solo si defines BASIC_AUTH_USER y BASIC_AUTH_HASH.
+# Ojo: si EasyPanel ya aplica basic auth al dominio, el navegador pedirá
+# credenciales dos veces. Elige una de las dos capas.
+
+:80 {
+	encode zstd gzip
+
+	basic_auth {
+		{$BASIC_AUTH_USER} {$BASIC_AUTH_HASH}
+	}
+
+	reverse_proxy 127.0.0.1:4400 {
+		header_up Host 127.0.0.1:4400
+		header_up Origin http://127.0.0.1:4400
+		transport http {
+			read_timeout 15m
+			write_timeout 15m
+		}
+	}
+}

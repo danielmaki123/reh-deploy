@@ -1,0 +1,15 @@
+# Sin auth propia: la pone EasyPanel a nivel de dominio (Basic Auth del servicio).
+# /api/ es solo accesible dentro de la red del proyecto si no publicas el puerto.
+
+:80 {
+	encode zstd gzip
+
+	reverse_proxy 127.0.0.1:4400 {
+		header_up Host 127.0.0.1:4400
+		header_up Origin http://127.0.0.1:4400
+		transport http {
+			read_timeout 15m
+			write_timeout 15m
+		}
+	}
+}
